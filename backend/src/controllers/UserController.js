@@ -39,4 +39,23 @@ module.exports = {
       };
     }
   },
+
+  async oneSignalInformations(request, response) {
+    const { _id, onesignal_token, onesignal_user_id } = request.body;
+
+    try {
+      const user = await User.setOneSignalInformations(
+        _id,
+        onesignal_token,
+        onesignal_user_id
+      );
+
+      return response.json(user);
+    } catch (err) {
+      return {
+        code: 500,
+        message: "User not registered, try again.",
+      };
+    }
+  },
 };

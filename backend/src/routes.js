@@ -30,6 +30,10 @@ const routes = express.Router();
 // User
 routes.post("/user/register", UserController.register);
 routes.post("/user/signin", UserController.signin);
+routes.post(
+  "/user/setOneSignalInformations",
+  UserController.oneSignalInformations
+);
 
 //Group
 routes.post("/group/create", GroupController.create);

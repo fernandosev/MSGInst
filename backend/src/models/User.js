@@ -77,4 +77,26 @@ module.exports = {
       };
     }
   },
+
+  async setOneSignalInformations(_id, onesignal_token, onesignal_user_id) {
+    try {
+      const pool = await connection();
+
+      const promisePool = pool.promise();
+
+      const dbResponse = await promisePool.query(
+        `update user set user_push_token = "${onesignal_token}", user_onesignal_id = "${onesignal_user_id}" where user_id = ${_id};`
+      );
+
+      return {
+        code: 200,
+        message: "Usuário atualizado.",
+      };
+    } catch (err) {
+      return {
+        code: 500,
+        message: "Usuário não atualizado. Tente novamente.",
+      };
+    }
+  },
 };

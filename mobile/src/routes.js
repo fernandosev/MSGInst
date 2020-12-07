@@ -1,5 +1,5 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
+import React, {useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
 import {StatusBar} from 'react-native';
 
 import {navigationRef} from '~/services/navigation';
@@ -22,10 +22,16 @@ import SignIn from '~/screens/SignIn';
 import Register from '~/screens/Register';
 import MyGroups from '~/screens/MyGroups';
 import AnotherGroups from '~/screens/AnotherGroups';
+import {setUserPushInformationsRequest} from './store/modules/user/actions';
 
 export default function Routes() {
   // Redux (auth) global states
+  const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
+
+  useEffect(() => {
+    if (token) dispatch(setUserPushInformationsRequest());
+  });
 
   return (
     <>

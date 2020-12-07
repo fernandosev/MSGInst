@@ -23,3 +23,28 @@ export function setUser(_id, name, email) {
     payload: {_id, name, email},
   };
 }
+
+export function setUserPushInformations(onesignal_token, onesignal_user_id) {
+  return {
+    type: '@user/SET_USER_PUSH_INFORMATIONS',
+    payload: {onesignal_token, onesignal_user_id},
+  };
+}
+
+export function setUserPushInformationsRequest() {
+  return {
+    type: '@user/SET_USER_PUSH_INFORMATIONS_REQUEST',
+  };
+}
+
+export function setUserPushInformationsSuccess() {
+  return {
+    type: '@user/SET_USER_PUSH_INFORMATIONS_SUCCESS',
+  };
+}
+
+export function setUserPushInformationsFailure() {
+  return {
+    type: '@user/SET_USER_PUSH_INFORMATIONS_FAILURE',
+  };
+}

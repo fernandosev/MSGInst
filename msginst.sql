@@ -5,7 +5,9 @@ CREATE TABLE IF NOT EXISTS `user` (
 	user_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     user_name VARCHAR(300) NOT NULL,
     user_email VARCHAR(400) NOT NULL,
-    user_password LONGTEXT NOT NULL
+    user_password LONGTEXT NOT NULL,
+    user_push_token LONGTEXT,
+    user_onesignal_id LONGTEXT
 );
 
 CREATE TABLE IF NOT EXISTS `group` (
