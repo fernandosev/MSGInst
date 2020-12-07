@@ -23,6 +23,7 @@ export default function MyGroups({navigation}) {
     (state) => state.group.createGroupLoading,
   );
   const myGroups = useSelector((state) => state.group.myGroups);
+  const userName = useSelector((state) => state.user.name);
   const [modalVisible, setModalVisible] = React.useState(false);
   const [groupName, setGroupName] = React.useState('');
 
@@ -31,15 +32,13 @@ export default function MyGroups({navigation}) {
   const sendMessageLoading = useSelector(
     (state) => state.group.sendMessageLoading,
   );
+  const [groupInformations, setGroupInformations] = React.useState({
+    groupName: '',
+    groupID: null,
+  });
 
   React.useEffect(() => {
     dispatch(getMyGroupsRequest(toast));
-    OneSignal.postNotification(
-      {en: 'You got notification from user'},
-      [],
-      'e6772c97-1a10-4b59-b57c-d955c74452e6',
-      {},
-    );
   }, []);
 
   const toast = (title, message, color) => {
@@ -52,6 +51,19 @@ export default function MyGroups({navigation}) {
     });
   };
 
+  const sendMessage = () => {
+    dispatch(
+      sendMessageRequest(
+        `${groupInformations.groupName}: ${userName}`,
+        message,
+        1,
+      ),
+    );
+
+    setMessage('');
+    setMessageModalVisible(false);
+  };
+
   return (
     <Root>
       <Container>
@@ -61,7 +73,13 @@ export default function MyGroups({navigation}) {
               <GroupRow
                 key={index}
                 name={value.group_name}
-                onPress={() => setMessageModalVisible(!messageModalVisible)}
+                onPress={() => {
+                  setGroupInformations({
+                    groupName: value.group_name,
+                    groupID: value.group_id,
+                  });
+                  setMessageModalVisible(!messageModalVisible);
+                }}
               />
             );
           })}
@@ -88,7 +106,7 @@ export default function MyGroups({navigation}) {
         </Dialog>
 
         <Dialog
-          btnAction={() => console.log('message')}
+          btnAction={() => sendMessage()}
           btnTitle="Enviar"
           close={() => setMessageModalVisible(false)}
           title="Nova mensagem"
