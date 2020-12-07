@@ -46,6 +46,8 @@ DB_HOST = your dbhost
 DB_USER = your user of db
 DB_PASS = your password of db
 DB = msginst
+ONESIGNAL_APP_ID = your_app_id
+ONESIGNAL_TOKEN = your_onesignal_token
 
 6. Execute a aplicação
 $ node server.js
