@@ -63,23 +63,21 @@ $ cd msginst/mobile
 2. Instale as dependências
 $ yarn
 
-3. Crie o banco de dados utilizando o Script disponível disponível na pasta raíz do projeto (msginst.sql)
-
-4. Configure o .env em ./msginst/.env com as seguintes variáveis de ambiente
+3. Configure o .env em ./msginst/.env com as seguintes variáveis de ambiente
 API_BASE_URL=base url of server (backend) base_url:server_port
 ONESIGNAL_APP_ID=your onesignal app id
 
-5. Crie o arquivo gradle.properties na pasta mobile/android e adicione as seguintes propriedades:
+4. Crie o arquivo gradle.properties na pasta mobile/android e adicione as seguintes propriedades:
 android.useAndroidX=true
 android.enableJetifier=true
 FLIPPER_VERSION=0.54.0
 ONESIGNAL_APP_ID=your_onesignal_app_id
 ONESIGNAL_GOOGLE_PROJECT_NUMBER=your_onesignal_google_project_name
 
-6. instale as dependências nativas do ios
+5. instale as dependências nativas do ios
 $ npx pod-install
 
-7. Execute a aplicação
+6. Execute a aplicação
 $ react-native run-ios 
 $ react-native run-android
 
