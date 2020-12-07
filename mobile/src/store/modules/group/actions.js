@@ -75,3 +75,22 @@ export function joinGroupFailure() {
     type: '@group/JOIN_GROUP_FAILURE',
   };
 }
+
+export function sendMessageRequest(title, message, groupID) {
+  return {
+    type: '@group/SEND_MESSAGE_REQUEST',
+    payload: {title, message, groupID},
+  };
+}
+
+export function sendMessageSuccess() {
+  return {
+    type: '@group/SEND_MESSAGE_SUCCESS',
+  };
+}
+
+export function sendMessageFailure() {
+  return {
+    type: '@group/SEND_MESSAGE_FAILURE',
+  };
+}

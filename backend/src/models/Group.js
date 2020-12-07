@@ -16,8 +16,6 @@ module.exports = {
 
       const newGrupuID = dbResponse[0].insertId;
 
-      console.log(newGrupuID, userID);
-
       return await this.addUserToGroup(newGrupuID, userID);
     } catch (err) {
       return {

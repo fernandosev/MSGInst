@@ -40,5 +40,6 @@ routes.post("/group/create", GroupController.create);
 routes.post("/groups/my", GroupController.getMyGroups);
 routes.post("/groups/another", GroupController.getAnotherGroups);
 routes.post("/group/join", GroupController.join);
+routes.post("/group/sendMessage", GroupController.sendMessage);
 
 module.exports = routes;

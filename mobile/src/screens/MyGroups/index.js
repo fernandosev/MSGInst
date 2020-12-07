@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import OneSignal from 'react-native-onesignal';
 import {Root, Toast} from 'popup-ui';
 
 import Icon from '~/components/Icon';
@@ -13,6 +14,7 @@ import Input from '~/components/Input';
 import {
   createGroupRequest,
   getMyGroupsRequest,
+  sendMessageRequest,
 } from '~/store/modules/group/actions';
 
 export default function MyGroups({navigation}) {
@@ -32,6 +34,12 @@ export default function MyGroups({navigation}) {
 
   React.useEffect(() => {
     dispatch(getMyGroupsRequest(toast));
+    OneSignal.postNotification(
+      {en: 'You got notification from user'},
+      [],
+      'e6772c97-1a10-4b59-b57c-d955c74452e6',
+      {},
+    );
   }, []);
 
   const toast = (title, message, color) => {

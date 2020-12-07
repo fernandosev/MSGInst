@@ -12,6 +12,8 @@ import {
   getMyGroupsSuccess,
   joinGroupFailure,
   joinGroupSuccess,
+  sendMessageFailure,
+  sendMessageSuccess,
 } from './actions';
 import colors from '~/styles/colors';
 
@@ -116,9 +118,30 @@ export function* joinGroup({payload}) {
   }
 }
 
+export function* sendMessage({payload}) {
+  const {title, message, groupID} = payload;
+
+  // api.defaults.headers['access-token'] = token;
+
+  try {
+    const response = yield call(api.post, '/group/sendMessage', {
+      title,
+      message,
+      groupID,
+    });
+
+    console.log(response.data);
+
+    yield put(sendMessageSuccess());
+  } catch (err) {
+    yield put(sendMessageFailure());
+  }
+}
+
 export default all([
   takeLatest('@group/CREATE_GROUP_REQUEST', createGroup),
   takeLatest('@group/GET_MY_GROUPS_REQUEST', getMyGroups),
   takeLatest('@group/GET_ANOTHER_GROUPS_REQUEST', getAnotherGroups),
   takeLatest('@group/JOIN_GROUP_REQUEST', joinGroup),
+  takeLatest('@group/SEND_MESSAGE_REQUEST', sendMessage),
 ]);

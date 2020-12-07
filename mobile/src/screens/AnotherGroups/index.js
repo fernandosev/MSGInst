@@ -7,6 +7,7 @@ import GroupRow from '~/components/GroupRow';
 import {
   getAnotherGroupsRequest,
   joinGroupRequest,
+  sendMessageRequest,
 } from '~/store/modules/group/actions';
 
 export default function MyGroups({navigation}) {

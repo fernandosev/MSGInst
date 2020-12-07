@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   loadingMyGroups: false,
   loadingAnotherGroups: false,
   loadingJoinGroup: false,
+  loadingSendMessage: false,
 };
 
 export default function auth(state = INITIAL_STATE, action) {
@@ -71,6 +72,21 @@ export default function auth(state = INITIAL_STATE, action) {
 
       case '@group/JOIN_GROUP_FAILURE': {
         draft.loadingJoinGroup = false;
+        break;
+      }
+
+      case '@group/SEND_MESSAGE_REQUEST': {
+        draft.loadingSendMessage = true;
+        break;
+      }
+
+      case '@group/SEND_MESSAGE_SUCCESS': {
+        draft.loadingSendMessage = false;
+        break;
+      }
+
+      case '@group/SEND_MESSAGE_FAILURE': {
+        draft.loadingSendMessage = false;
         break;
       }
     }

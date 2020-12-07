@@ -1,4 +1,5 @@
 var jwt = require("jsonwebtoken");
+var unirest = require("unirest");
 const Group = require("./../models/Group");
 
 module.exports = {
@@ -58,5 +59,39 @@ module.exports = {
         message: "Erro ao buscar grupos. Tente novamente.",
       };
     }
+  },
+
+  async sendMessage(request, response) {
+    const { title, message, groupID } = request.body;
+
+    const sendNotification = await new Promise((resolve, reject) => {
+      const req = unirest("POST", "https://onesignal.com/api/v1/notifications");
+
+      req.headers({
+        "content-type": "application/json",
+        authorization: `Basic ${process.env.ONESIGNAL_TOKEN}`,
+      });
+
+      req.type("json");
+      req.send({
+        included_segments: ["Subscribed Users"],
+        app_id: process.env.ONESIGNAL_APP_ID,
+        contents: {
+          en: message,
+        },
+        headings: {
+          en: title,
+        },
+        data: {},
+      });
+
+      req.end(function (res) {
+        if (res.error) reject(res.error);
+
+        resolve(res.body);
+      });
+    });
+
+    response.json(sendNotification);
   },
 };
