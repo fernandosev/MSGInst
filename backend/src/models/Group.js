@@ -96,4 +96,31 @@ module.exports = {
       };
     }
   },
+
+  async selectUsersFromGroup(groupID, sender) {
+    try {
+      const pool = await connection();
+
+      const promisePool = pool.promise();
+
+      const dbResponse = await promisePool.query(
+        "select `user`.`user_id`, `user`.`user_name`, `user`.`user_onesignal_id`, `group`.`group_id`, `group`.`group_name` from `user` inner join `user_group` on `user`.`user_id` = `user_group`.`user_id` inner join `group` on `group`.`group_id` = `user_group`.`group_id` where `user`.`user_id` != " +
+          sender +
+          " and `group`.`group_id` = " +
+          groupID +
+          ";"
+      );
+
+      return {
+        code: 200,
+        message: "Sucesso!",
+        groups: dbResponse[0],
+      };
+    } catch (err) {
+      return {
+        code: 500,
+        message: "Erro. Tente novamente.",
+      };
+    }
+  },
 };

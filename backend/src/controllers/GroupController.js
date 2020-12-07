@@ -62,36 +62,51 @@ module.exports = {
   },
 
   async sendMessage(request, response) {
-    const { title, message, groupID } = request.body;
+    const { title, message, groupID, sender } = request.body;
 
-    const sendNotification = await new Promise((resolve, reject) => {
-      const req = unirest("POST", "https://onesignal.com/api/v1/notifications");
+    const usersFromGroup = await Group.selectUsersFromGroup(groupID, sender);
 
-      req.headers({
-        "content-type": "application/json",
-        authorization: `Basic ${process.env.ONESIGNAL_TOKEN}`,
-      });
+    const ids = [];
 
-      req.type("json");
-      req.send({
-        included_segments: ["Subscribed Users"],
-        app_id: process.env.ONESIGNAL_APP_ID,
-        contents: {
-          en: message,
-        },
-        headings: {
-          en: title,
-        },
-        data: {},
-      });
-
-      req.end(function (res) {
-        if (res.error) reject(res.error);
-
-        resolve(res.body);
-      });
+    usersFromGroup.groups.forEach((value, index) => {
+      ids.push(value.user_onesignal_id);
     });
 
-    response.json(sendNotification);
+    if (ids.length > 0) {
+      const sendNotification = await new Promise((resolve, reject) => {
+        const req = unirest(
+          "POST",
+          "https://onesignal.com/api/v1/notifications"
+        );
+
+        req.headers({
+          "content-type": "application/json",
+          authorization: `Basic ${process.env.ONESIGNAL_TOKEN}`,
+        });
+
+        req.type("json");
+        req.send({
+          include_player_ids: ids,
+          app_id: process.env.ONESIGNAL_APP_ID,
+          contents: {
+            en: message,
+          },
+          headings: {
+            en: title,
+          },
+          data: {},
+        });
+
+        req.end(function (res) {
+          if (res.error) reject(res.error);
+
+          resolve(res.body);
+        });
+      });
+
+      response.json(sendNotification);
+    } else {
+      response.json({});
+    }
   },
 };

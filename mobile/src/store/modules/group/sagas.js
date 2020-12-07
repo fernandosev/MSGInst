@@ -120,6 +120,7 @@ export function* joinGroup({payload}) {
 
 export function* sendMessage({payload}) {
   const {title, message, groupID} = payload;
+  const sender = yield select((state) => state.user._id);
 
   // api.defaults.headers['access-token'] = token;
 
@@ -128,6 +129,7 @@ export function* sendMessage({payload}) {
       title,
       message,
       groupID,
+      sender,
     });
 
     console.log(response.data);
