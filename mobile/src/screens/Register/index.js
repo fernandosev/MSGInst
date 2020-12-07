@@ -6,7 +6,6 @@ import { Root, Toast } from 'popup-ui';
 
 import Input from "~/components/Input";
 import SquaredButton from "~/components/SquaredButton";
-import ButtonLight from "~/components/ButtonLight";
 import KeyboardScrollView from "~/components/KeyboardScrollView";
 
 import colors from "~/styles/colors";
@@ -18,16 +17,17 @@ import {
 } from "./styles";
 
 import AppIcon from '~/assets/svgs/icon.svg';
-import { signInRequest } from "~/store/modules/auth/actions";
+import { createUserRequest } from "~/store/modules/user/actions";
 
-const SignIn: React.FC<React.Component> = ({navigation}) => {
-
+export default function Register ({}){
   const dispatch = useDispatch();
-  const loading  = useSelector(state => state.auth.loading);
+  const loading  = useSelector(state => state.user.loading);
 
   const FormSchema = Yup.object().shape({
+    name: Yup.string().required('Informe seu nome.'),
     email: Yup.string().required('Informe seu email.'),
     password: Yup.string().required('Informe sua senha.'),
+    confirmPassword: Yup.string().required('Confirme sua senha.').oneOf([Yup.ref('password'), null], 'As senhas devem ser iguais.'),
   });
 
   const toast = (title, message, color) => {
@@ -49,13 +49,26 @@ const SignIn: React.FC<React.Component> = ({navigation}) => {
 
             <Formik
                 initialValues={{
+                  name: '',
                   email: '',
                   password: '',
+                  confirmPassword: ''
                 }}
-                onSubmit={(values) => dispatch(signInRequest(values.email, values.password, toast))}
+                onSubmit={(values) => dispatch(createUserRequest(values.name, values.email, values.password, toast))}
                 validationSchema={() => FormSchema}>
                 {({values, handleChange, handleSubmit, errors, touched}) => (
                   <>
+                    <Input 
+                      color={colors.white}
+                      title="Nome"
+                      autoCorrect={false}
+                      value={values.name}
+                      onChangeText={handleChange('name')}
+                      errorText={
+                        errors.name && touched.name ? errors.name : null
+                      }
+                    />
+
                     <Input 
                       color={colors.white}
                       title="Email"
@@ -82,25 +95,29 @@ const SignIn: React.FC<React.Component> = ({navigation}) => {
                       }
                     />
 
+                    <Input 
+                      color={colors.white}
+                      title="Confirme sua senha"
+                      secureTextEntry={true}
+                      autoCorrect={false}
+                      autoCapitalize="none"
+                      value={values.confirmPassword}
+                      onChangeText={handleChange('confirmPassword')}
+                      errorText={
+                        errors.confirmPassword && touched.confirmPassword ? errors.confirmPassword : null
+                      }
+                    />        
+
                     <SquaredButton
                       onPress={handleSubmit}
-                      text="Entrar"
-                      loading={false}
+                      text="Salvar"
+                      loading={loading}
                       iconType="Ionicons"
-                      iconName="chevron-forward"
+                      iconName="checkmark-sharp"
                       color={colors.white}
-                    />
-
-                    <ButtonLight
-                      style={{marginTop: 10}}
-                      color={colors.white}
-                      onPress={() => navigation.navigate('Register')}
-                      text="Não possui uma conta? Cadastre-se"
                     />
                   </>
                 )}
-
-                
               </Formik>
             </KeyboardScrollView>
         </Container>
@@ -108,5 +125,3 @@ const SignIn: React.FC<React.Component> = ({navigation}) => {
     </Root>
   );
 }
-
-export default SignIn;
