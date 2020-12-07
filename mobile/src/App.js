@@ -2,13 +2,13 @@ import React, {useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import Routes from '~/routes';
 import OneSignal from 'react-native-onesignal';
-import {ONESIGNAL_KEY} from '@env';
+import {ONESIGNAL_APP_ID} from '@env';
 import {setUserPushInformations} from './store/modules/user/actions';
 
 export default function App() {
   const dispatch = useDispatch();
   useEffect(() => {
-    OneSignal.init(ONESIGNAL_KEY);
+    OneSignal.init(ONESIGNAL_APP_ID);
     OneSignal.addEventListener('received', onReceived);
     OneSignal.addEventListener('opened', onOpened);
     OneSignal.addEventListener('ids', onIds);
