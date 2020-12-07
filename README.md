@@ -66,7 +66,8 @@ $ yarn
 3. Crie o banco de dados utilizando o Script disponível disponível na pasta raíz do projeto (msginst.sql)
 
 4. Configure o .env em ./msginst/.env com as seguintes variáveis de ambiente
-API_BASE_URL = base url of server (backend) base_url:server_port
+API_BASE_URL=base url of server (backend) base_url:server_port
+ONESIGNAL_APP_ID=your onesignal app id
 
 5. instale as dependências nativas do ios
 $ npx pod-install
