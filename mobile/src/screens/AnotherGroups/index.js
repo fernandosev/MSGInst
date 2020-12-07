@@ -12,6 +12,7 @@ import {
 export default function MyGroups({navigation}) {
   const dispatch = useDispatch();
   const anotherGroups = useSelector((state) => state.group.anotherGroups);
+  const myGroups = useSelector((state) => state.group.myGroups);
 
   React.useEffect(() => {
     dispatch(getAnotherGroupsRequest(toast));
@@ -30,6 +31,9 @@ export default function MyGroups({navigation}) {
       <Container>
         <Scroll>
           {anotherGroups.map((value, index) => {
+            if (myGroups.find((element) => element.group_id === value.group_id))
+              return;
+
             return (
               <GroupRow
                 key={index}
